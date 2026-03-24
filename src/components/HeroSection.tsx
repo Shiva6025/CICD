@@ -53,7 +53,7 @@ export default function HeroSection() {
         <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
           Ship Faster with{" "}
           <span className="bg-clip-text text-white gradient-bg inline-block glow-text px-3">
-            Modern
+            Modern 
           </span>
           <br />
           <span className="typewriter text-indigo-400 font-mono text-4xl md:text-5xl">
