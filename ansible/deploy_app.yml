@@ -1,0 +1,84 @@
+# ---
+# - name: Deploy Next.js Docker app to EC2
+#   hosts: web
+#   become: true
+#   vars:
+#     docker_image: "shivakrishnaanamala/my-first-image"
+#     docker_tag: "latest"
+#     container_name: "my-app"
+#     host_port: 80
+#     container_port: 3000
+#   tasks:
+#     - name: Update apt cache
+#       apt:
+#         update_cache: yes
+#       when: ansible_os_family == 'Debian'
+
+#     - name: Install Docker engine
+#       apt:
+#         name:
+#           - docker.io
+#           - python3-pip
+#         state: present
+#       when: ansible_os_family == 'Debian'
+
+#     - name: Ensure Docker service is running
+#       service:
+#         name: docker
+#         state: started
+#         enabled: yes
+
+#     - name: Install community.docker collection (control node)
+#       ansible.builtin.pip:
+#         name: "ansible-core>=2.13"
+#       delegate_to: localhost
+#       run_once: true
+
+#     - name: Pull Docker image from Docker Hub
+#       community.docker.docker_image:
+#         name: "{{ docker_image }}"
+#         tag: "{{ docker_tag }}"
+#         source: pull
+
+#     - name: Remove existing app container if present
+#       community.docker.docker_container:
+#         name: "{{ container_name }}"
+#         state: absent
+
+#     - name: Create/run app container
+#       community.docker.docker_container:
+#         name: "{{ container_name }}"
+#         image: "{{ docker_image }}:{{ docker_tag }}"
+#         state: started
+#         restart_policy: always
+#         published_ports:
+#           - "{{ host_port }}:{{ container_port }}"
+
+
+---
+- name: Setup Docker and Run Container
+  hosts: webserver
+  become: true
+
+  tasks:
+
+    - name: Install required packages
+      apt:
+        name:
+          - docker.io
+        state: present
+        update_cache: yes
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull Docker Image
+      docker_container:
+        name: my-app
+        image: shivakrishnaanamala/my-first-image
+        state: started
+        ports:
+          - "80:80"
