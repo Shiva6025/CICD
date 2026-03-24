@@ -50,9 +50,9 @@ export default function HeroSection() {
         </div>
 
         {/* Main heading */}
-        <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight p-8">
+        <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
           Ship Faster with{" "}
-          <span className="bg-clip-text text-white gradient-bg inline-block glow-text">
+          <span className="bg-clip-text text-white gradient-bg inline-block glow-text px-2">
             Modern
           </span>
           <br />
