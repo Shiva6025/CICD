@@ -1,28 +1,17 @@
-# Step 1: Build stage
+# Build stage
 FROM node:20 AS builder
 
 WORKDIR /app
-
-# Install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy source code
 COPY . .
 
-# Build Next.js app
+RUN npm install
 RUN npm run build
 
-# Step 2: Production stage
-FROM node:20-alpine
+# Production stage (NGINX)
+FROM nginx:alpine
 
-WORKDIR /app
+COPY --from=builder /app/out /usr/share/nginx/html
 
-# Copy only required files from builder
-COPY --from=builder /app ./
+EXPOSE 80
 
-# Expose port
-EXPOSE 3000
-
-# Start app
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
