@@ -1,3 +1,31 @@
+---
+- name: Setup Docker and Run Container
+  hosts: webserver
+  become: true
+
+  tasks:
+
+    - name: Install required packages
+      apt:
+        name:
+          - docker.io
+        state: present
+        update_cache: yes
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull Docker Image
+      docker_container:
+        name: my-app
+        image: shivakrishnaanamala/my-first-image
+        state: started
+        ports:
+          - "80:80"
+
 # ---
 # - name: Deploy Next.js Docker app to EC2
 #   hosts: web
@@ -53,32 +81,3 @@
 #         restart_policy: always
 #         published_ports:
 #           - "{{ host_port }}:{{ container_port }}"
-
-
----
-- name: Setup Docker and Run Container
-  hosts: webserver
-  become: true
-
-  tasks:
-
-    - name: Install required packages
-      apt:
-        name:
-          - docker.io
-        state: present
-        update_cache: yes
-
-    - name: Start Docker
-      service:
-        name: docker
-        state: started
-        enabled: yes
-
-    - name: Pull Docker Image
-      docker_container:
-        name: my-app
-        image: shivakrishnaanamala/my-first-image
-        state: started
-        ports:
-          - "80:80"
