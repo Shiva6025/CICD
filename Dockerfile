@@ -7,7 +7,7 @@ COPY . .
 RUN npm install
 RUN npm run build
 
-# Production stage (serve static)
+# Production stage (serve static checking)
 FROM node:20-alpine
 
 WORKDIR /app
